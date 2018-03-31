@@ -1,11 +1,11 @@
-﻿using FileSystemShardingNet.Enums;
+﻿using FileSystemShardingNet.Configuration;
 
 namespace FileSystemShardingNet.Interfaces
 {
     public interface IFileSystemFactory
     {
-        IFileSystemReadable CreateReadable(FileSystemType type);
+        IFileSystemReadable CreateReadable(ClientConfiguration configuration);
 
-        IFileSystemWriteable CreateWriteable(FileSystemType type);
+        IFileSystemWriteable CreateWriteable(ClientConfiguration configuration);
     }
 }

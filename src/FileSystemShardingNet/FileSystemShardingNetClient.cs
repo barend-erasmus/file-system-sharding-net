@@ -1,5 +1,4 @@
 ﻿using FileSystemShardingNet.Configuration;
-using FileSystemShardingNet.Enums;
 using FileSystemShardingNet.Factories;
 using FileSystemShardingNet.Interfaces;
 using System;
@@ -11,31 +10,33 @@ namespace FileSystemShardingNet
     {
         private readonly ClientConfiguration _configuration;
 
-        private readonly IFileSystemReadable _fileSystemReadable;
+        private IFileSystemReadable _fileSystemReadable;
 
-        private readonly IFileSystemWriteable _fileSystemWriteable;
+        private IFileSystemWriteable _fileSystemWriteable;
 
         private const int _numberOfSlots = 4096;
 
         private readonly IShardingStrategy _shardingStrategy;
 
-        public FileSystemShardingNetClient(ClientConfiguration configuration)
+        public FileSystemShardingNetClient(ClientConfiguration configuration, IFileSystemFactory fileSystemFactory = null, IShardingStrategyFactory shardingStrategyFactory = null)
         {
+            configuration.Validate();
             _configuration = configuration;
 
-            IFileSystemFactory fileSystemFactory = new DefaultFileSystemFactory();
+            fileSystemFactory = fileSystemFactory ?? new DefaultFileSystemFactory();
+            SetFileSystems(fileSystemFactory);
 
-            _fileSystemReadable = fileSystemFactory.CreateReadable(FileSystemType.Disk);
-
-            _fileSystemWriteable = fileSystemFactory.CreateWriteable(FileSystemType.Disk);
-
-            IShardingStrategyFactory shardingStrategyFactory = new DefaultShardingStrategyFactory();
-
+            shardingStrategyFactory = shardingStrategyFactory ?? new DefaultShardingStrategyFactory();
             _shardingStrategy = shardingStrategyFactory.Create(configuration);
         }
 
-        public Stream Read(string path)
+        public Stream ReadFromMaster(string path)
         {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException("'path' is null, empty or white space");
+            }
+
             ShardConfiguration shardConfiguration = GetShardConfiguration(path);
 
             NodeConfiguration nodeConfiguration = shardConfiguration.Master;
@@ -43,8 +44,32 @@ namespace FileSystemShardingNet
             return GetStreamFromNodeConfiguration(nodeConfiguration, path);
         }
 
+        public Stream ReadFromSlave(string path, int slaveIndex)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException("'path' is null, empty or white space");
+            }
+
+            ShardConfiguration shardConfiguration = GetShardConfiguration(path);
+
+            if (slaveIndex >= shardConfiguration.Slaves.Length)
+            {
+                throw new IndexOutOfRangeException($"'slaveIndex', {slaveIndex}, is not in range");
+            }
+
+            NodeConfiguration nodeConfiguration = shardConfiguration.Slaves[slaveIndex];
+
+            return GetStreamFromNodeConfiguration(nodeConfiguration, path);
+        }
+
         public bool Write(string path, Stream stream)
         {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException("'path' is null, empty or white space");
+            }
+
             ShardConfiguration shardConfiguration = GetShardConfiguration(path);
 
             NodeConfiguration masterNodeConfiguration = shardConfiguration.Master;
@@ -82,6 +107,13 @@ namespace FileSystemShardingNet
         private Stream GetStreamFromNodeConfiguration(NodeConfiguration nodeConfiguration, string path)
         {
             return _fileSystemReadable.GetReadStream(BuildPath(nodeConfiguration, path));
+        }
+
+        private void SetFileSystems(IFileSystemFactory fileSystemFactory)
+        {
+            _fileSystemReadable = fileSystemFactory.CreateReadable(_configuration);
+
+            _fileSystemWriteable = fileSystemFactory.CreateWriteable(_configuration);
         }
 
         private void WriteStreamToNodeConfiguration(NodeConfiguration nodeConfiguration, string path, Stream stream)

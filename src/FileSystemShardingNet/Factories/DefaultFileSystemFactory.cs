@@ -1,4 +1,5 @@
-﻿using FileSystemShardingNet.Enums;
+﻿using FileSystemShardingNet.Configuration;
+using FileSystemShardingNet.Enums;
 using FileSystemShardingNet.FileSystems;
 using FileSystemShardingNet.Interfaces;
 
@@ -6,9 +7,9 @@ namespace FileSystemShardingNet.Factories
 {
     public class DefaultFileSystemFactory : IFileSystemFactory
     {
-        public IFileSystemReadable CreateReadable(FileSystemType type)
+        public IFileSystemReadable CreateReadable(ClientConfiguration configuration)
         {
-            switch(type)
+            switch(configuration.FileSystemType)
             {
                 case FileSystemType.Disk:
                     return new DiskFileSystem();
@@ -17,9 +18,9 @@ namespace FileSystemShardingNet.Factories
             }
         }
 
-        public IFileSystemWriteable CreateWriteable(FileSystemType type)
+        public IFileSystemWriteable CreateWriteable(ClientConfiguration configuration)
         {
-            switch (type)
+            switch (configuration.FileSystemType)
             {
                 case FileSystemType.Disk:
                     return new DiskFileSystem();

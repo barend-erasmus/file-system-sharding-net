@@ -12,6 +12,8 @@ namespace FileSystemShardingNet.Factories
             {
                 case Enums.ShardingStrategy.DJBD2:
                     return new DJBD2();
+                case Enums.ShardingStrategy.FNV1A:
+                    return new FNV1A();
                 default:
                     return null;
             }

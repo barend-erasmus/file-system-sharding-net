@@ -8,7 +8,7 @@ using System.Reflection;
 namespace FileSystemShardingNet.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class IntegrationTests
     {
         private ClientConfiguration _clientConfiguration;
 
@@ -58,7 +58,7 @@ namespace FileSystemShardingNet.Tests
         }
 
         [TestMethod]
-        public void TestMethod1()
+        public void Write()
         {
             string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -90,6 +90,7 @@ namespace FileSystemShardingNet.Tests
         {
             ClientConfiguration clientConfiguration = new ClientConfiguration()
             {
+                FileSystemType = FileSystemType.Disk,
                 ShardingStrategy = ShardingStrategy.DJBD2,
                 Shards = new ShardConfiguration[numberOfShards],
             };
