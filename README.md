@@ -16,6 +16,10 @@ Application Layer File System Sharding Client
 
 `paket add FileSystemSharding.NET --version 1.0.0`
 
+## Diagram
+
+![](https://github.com/barend-erasmus/file-system-sharding-net/raw/master/images/example.png)
+
 ## Usage
 
 ### Read
@@ -75,39 +79,39 @@ FileSystemType: Disk
 ShardingStrategy: DJBD2
 Shards:
 - Master:
-    Path: C:\NodeDirectories\Node-0
+    Path: C:\Node-0
   Slaves:
-  - Path: C:\NodeDirectories\Node-0 - Slave-0
-  - Path: C:\NodeDirectories\Node-0 - Slave-1
+  - Path: C:\Node-0 - Slave-0
+  - Path: C:\Node-0 - Slave-1
   Slot: 682
 - Master:
-    Path: C:\NodeDirectories\Node-1
+    Path: C:\Node-1
   Slaves:
-  - Path: C:\NodeDirectories\Node-1 - Slave-0
-  - Path: C:\NodeDirectories\Node-1 - Slave-1
+  - Path: C:\Node-1 - Slave-0
+  - Path: C:\Node-1 - Slave-1
   Slot: 1364
 - Master:
-    Path: C:\NodeDirectories\Node-2
+    Path: C:\Node-2
   Slaves:
-  - Path: C:\NodeDirectories\Node-2 - Slave-0
-  - Path: C:\NodeDirectories\Node-2 - Slave-1
+  - Path: C:\Node-2 - Slave-0
+  - Path: C:\Node-2 - Slave-1
   Slot: 2046
 - Master:
-    Path: C:\NodeDirectories\Node-3
+    Path: C:\Node-3
   Slaves:
-  - Path: C:\NodeDirectories\Node-3 - Slave-0
-  - Path: C:\NodeDirectories\Node-3 - Slave-1
+  - Path: C:\Node-3 - Slave-0
+  - Path: C:\Node-3 - Slave-1
   Slot: 2728
 - Master:
-    Path: C:\NodeDirectories\Node-4
+    Path: C:\Node-4
   Slaves:
-  - Path: C:\NodeDirectories\Node-4 - Slave-0
-  - Path: C:\NodeDirectories\Node-4 - Slave-1
+  - Path: C:\Node-4 - Slave-0
+  - Path: C:\Node-4 - Slave-1
   Slot: 3410
 - Master:
-    Path: C:\NodeDirectories\Node-5
+    Path: C:\Node-5
   Slaves:
-  - Path: C:\NodeDirectories\Node-5 - Slave-0
-  - Path: C:\NodeDirectories\Node-5 - Slave-1
+  - Path: C:\Node-5 - Slave-0
+  - Path: C:\Node-5 - Slave-1
   Slot: 4092
 ```
