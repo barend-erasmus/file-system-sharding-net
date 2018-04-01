@@ -17,19 +17,19 @@ namespace FileSystemShardingNet.Configuration
 
         public static ClientConfiguration FromString(string str)
         {
-            Deserializer deserializer = new DeserializerBuilder()
+            var deserializer = new DeserializerBuilder()
                 .Build();
 
-            ClientConfiguration clientConfiguration = deserializer.Deserialize<ClientConfiguration>(new StringReader(str));
+            var clientConfiguration = deserializer.Deserialize<ClientConfiguration>(new StringReader(str));
 
             return clientConfiguration;
         }
 
         public string ToYAML()
         {
-            Serializer serializer = new SerializerBuilder().Build();
+            var serializer = new SerializerBuilder().Build();
 
-            string yaml = serializer.Serialize(this);
+            var yaml = serializer.Serialize(this);
 
             return yaml;
         }

@@ -51,7 +51,7 @@ Shards:
         [TestMethod]
         public void FromString_Should_Parse_FileSystemType()
         {
-            ClientConfiguration clientConfiguration = ClientConfiguration.FromString(YAML_CONFIG);
+            var clientConfiguration = ClientConfiguration.FromString(YAML_CONFIG);
 
             Assert.AreEqual(FileSystemType.Disk, clientConfiguration.FileSystemType);
         }
@@ -59,10 +59,12 @@ Shards:
         [TestMethod]
         public void FromString_Should_Parse_ShardingStrategy()
         {
-            ClientConfiguration clientConfiguration = ClientConfiguration.FromString(YAML_CONFIG);
+            var clientConfiguration = ClientConfiguration.FromString(YAML_CONFIG);
 
             Assert.AreEqual(ShardingStrategy.DJBD2, clientConfiguration.ShardingStrategy);
         }
+
+        // TODO: Add Tests for Validate
 
     }
 }

@@ -37,9 +37,9 @@ namespace FileSystemShardingNet
                 throw new ArgumentNullException("'path' is null, empty or white space");
             }
 
-            ShardConfiguration shardConfiguration = GetShardConfiguration(path);
+            var shardConfiguration = GetShardConfiguration(path);
 
-            NodeConfiguration nodeConfiguration = shardConfiguration.Master;
+            var nodeConfiguration = shardConfiguration.Master;
 
             return GetStreamFromNodeConfiguration(nodeConfiguration, path);
         }
@@ -51,14 +51,14 @@ namespace FileSystemShardingNet
                 throw new ArgumentNullException("'path' is null, empty or white space");
             }
 
-            ShardConfiguration shardConfiguration = GetShardConfiguration(path);
+            var shardConfiguration = GetShardConfiguration(path);
 
             if (slaveIndex >= shardConfiguration.Slaves.Length)
             {
                 throw new IndexOutOfRangeException($"'slaveIndex', {slaveIndex}, is not in range");
             }
 
-            NodeConfiguration nodeConfiguration = shardConfiguration.Slaves[slaveIndex];
+            var nodeConfiguration = shardConfiguration.Slaves[slaveIndex];
 
             return GetStreamFromNodeConfiguration(nodeConfiguration, path);
         }
@@ -70,13 +70,13 @@ namespace FileSystemShardingNet
                 throw new ArgumentNullException("'path' is null, empty or white space");
             }
 
-            ShardConfiguration shardConfiguration = GetShardConfiguration(path);
+            var shardConfiguration = GetShardConfiguration(path);
 
-            NodeConfiguration masterNodeConfiguration = shardConfiguration.Master;
+            var masterNodeConfiguration = shardConfiguration.Master;
 
             WriteStreamToNodeConfiguration(masterNodeConfiguration, path, stream);
 
-            foreach (NodeConfiguration nodeConfiguration in shardConfiguration.Slaves)
+            foreach (var nodeConfiguration in shardConfiguration.Slaves)
             {
                 WriteStreamToNodeConfiguration(nodeConfiguration, path, stream);
             }
@@ -91,9 +91,9 @@ namespace FileSystemShardingNet
 
         private ShardConfiguration GetShardConfiguration(string path)
         {
-            int slot = _shardingStrategy.GetSlot(_numberOfSlots, path);
+            var slot = _shardingStrategy.GetSlot(_numberOfSlots, path);
 
-            foreach (ShardConfiguration shardConfiguration in _configuration.Shards)
+            foreach (var shardConfiguration in _configuration.Shards)
             {
                 if (slot <= shardConfiguration.Slot)
                 {
@@ -120,9 +120,9 @@ namespace FileSystemShardingNet
         {
             Stream writeableStream = _fileSystemWriteable.GetWriteStream(BuildPath(nodeConfiguration, path));
 
-            byte[] buffer = new byte[32768];
+            var buffer = new byte[32768];
 
-            int read;
+            var read = 0;
 
             stream.Position = 0;
 

@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PackageId>FileSystemSharding.NET</PackageId>
+    <Authors>Barend Erasmus</Authors>
+    <Company>Developer's Workspace PTY LTD</Company>
+    <Description>Application Layer File System Sharding Client</Description>
+    <Copyright>Copyright © 2018 Developer's Workspace PTY LTD</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/barend-erasmus/file-system-sharding-net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/barend-erasmus/file-system-sharding-net</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>file system sharding hashing consitent-hash partitioning distributed</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

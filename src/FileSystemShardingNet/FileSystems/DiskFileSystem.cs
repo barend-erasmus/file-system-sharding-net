@@ -7,12 +7,14 @@ namespace FileSystemShardingNet.FileSystems
     {
         public Stream GetReadStream(string path)
         {
-            return new FileStream(path, FileMode.Open, FileAccess.Read);
+            var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+
+            return fileStream;
         }
 
         public Stream GetWriteStream(string path)
         {
-            FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+            var fileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
 
             return fileStream;
         }

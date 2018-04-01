@@ -6,7 +6,7 @@ namespace FileSystemShardingNet.ShardingStrategies
     {
         public int GetSlot(int numberOfSlots, string path)
         {
-            uint hash = ComputeHash(path);
+            var hash = ComputeHash(path);
 
             return (int)(hash % numberOfSlots);
         }
@@ -15,7 +15,7 @@ namespace FileSystemShardingNet.ShardingStrategies
         {
             uint hash = 0x1505;
 
-            for (int index = 0; index < str.Length; index++)
+            for (var index = 0; index < str.Length; index++)
             {
                 hash = ((hash << 5) + hash) + str[index];
             }

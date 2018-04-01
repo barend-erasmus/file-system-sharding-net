@@ -17,9 +17,9 @@ namespace FileSystemShardingNet.Tests
         [TestInitialize]
         public void Initialize()
         {
-            string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            string nodeDirectoriesPath = Path.Combine(currentPath, "NodeDirectories");
+            var nodeDirectoriesPath = Path.Combine(currentPath, "NodeDirectories");
 
             if (Directory.Exists(nodeDirectoriesPath))
             {
@@ -31,11 +31,11 @@ namespace FileSystemShardingNet.Tests
 
             _clientConfiguration = BuildClientConfiguration(nodeDirectoriesPath, 6, 2);
 
-            foreach (ShardConfiguration shardConfiguration in _clientConfiguration.Shards)
+            foreach (var shardConfiguration in _clientConfiguration.Shards)
             {
                 Directory.CreateDirectory(shardConfiguration.Master.Path);
 
-                foreach (NodeConfiguration slaveNodeConfiguration in shardConfiguration.Slaves)
+                foreach (var slaveNodeConfiguration in shardConfiguration.Slaves)
                 {
                     Directory.CreateDirectory(slaveNodeConfiguration.Path);
                 }
@@ -47,9 +47,9 @@ namespace FileSystemShardingNet.Tests
         [TestCleanup]
         public void Cleanup()
         {
-            string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            string nodeDirectoriesPath = Path.Combine(currentPath, "NodeDirectories");
+            var nodeDirectoriesPath = Path.Combine(currentPath, "NodeDirectories");
 
             if (Directory.Exists(nodeDirectoriesPath))
             {
@@ -60,15 +60,15 @@ namespace FileSystemShardingNet.Tests
         [TestMethod]
         public void Write()
         {
-            string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            string testFilesPath = Path.Combine(currentPath, "TestFiles");
+            var testFilesPath = Path.Combine(currentPath, "TestFiles");
 
-            foreach (FileInfo fileInfo in new DirectoryInfo(testFilesPath).GetFiles())
+            foreach (var fileInfo in new DirectoryInfo(testFilesPath).GetFiles())
             {
-                FileStream fileStream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read);
+                var fileStream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read);
 
-                string path = AbsolutePathToRelativePath(fileInfo.FullName, $@"{testFilesPath}\");
+                var path = AbsolutePathToRelativePath(fileInfo.FullName, $@"{testFilesPath}\");
 
                 _fileSystemShardingNetClient.Write(path, fileStream);
 
@@ -79,23 +79,23 @@ namespace FileSystemShardingNet.Tests
 
         private string AbsolutePathToRelativePath(string path, string referencePath)
         {
-            Uri uri = new Uri(path);
+            var uri = new Uri(path);
 
-            Uri referenceUri = new Uri(referencePath);
+            var referenceUri = new Uri(referencePath);
 
             return referenceUri.MakeRelativeUri(uri).ToString();
         }
 
         private ClientConfiguration BuildClientConfiguration(string nodeDirectoriesPath, int numberOfShards, int numberOfSlaves)
         {
-            ClientConfiguration clientConfiguration = new ClientConfiguration()
+            var clientConfiguration = new ClientConfiguration()
             {
                 FileSystemType = FileSystemType.Disk,
                 ShardingStrategy = ShardingStrategy.DJBD2,
                 Shards = new ShardConfiguration[numberOfShards],
             };
 
-            for (int shardIndex = 0; shardIndex < numberOfShards; shardIndex++)
+            for (var shardIndex = 0; shardIndex < numberOfShards; shardIndex++)
             {
                 clientConfiguration.Shards[shardIndex] = new ShardConfiguration()
                 {
@@ -107,7 +107,7 @@ namespace FileSystemShardingNet.Tests
                     Slot = 4096 / numberOfShards * (shardIndex + 1),
                 };
 
-                for (int slaveIndex = 0; slaveIndex < numberOfSlaves; slaveIndex++)
+                for (var slaveIndex = 0; slaveIndex < numberOfSlaves; slaveIndex++)
                 {
 
                     clientConfiguration.Shards[shardIndex].Slaves[slaveIndex] = new NodeConfiguration()
@@ -122,14 +122,14 @@ namespace FileSystemShardingNet.Tests
 
         private void ClearDirectory(string path)
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(path);
+            var directoryInfo = new DirectoryInfo(path);
 
-            foreach (FileInfo fileInfo in directoryInfo.GetFiles())
+            foreach (var fileInfo in directoryInfo.GetFiles())
             {
                 fileInfo.Delete();
             }
 
-            foreach (DirectoryInfo subDirectoryInfo in directoryInfo.GetDirectories())
+            foreach (var subDirectoryInfo in directoryInfo.GetDirectories())
             {
                 subDirectoryInfo.Delete(true);
             }
@@ -137,9 +137,9 @@ namespace FileSystemShardingNet.Tests
 
         private Stream StringToStream(string str)
         {
-            Stream stream = new MemoryStream();
+            var stream = new MemoryStream();
 
-            StreamWriter writer = new StreamWriter(stream);
+            var writer = new StreamWriter(stream);
 
             writer.Write(str);
 
