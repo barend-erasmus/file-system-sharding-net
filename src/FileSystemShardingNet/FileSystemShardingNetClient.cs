@@ -8,15 +8,15 @@ namespace FileSystemShardingNet
 {
     public class FileSystemShardingNetClient
     {
-        private readonly ClientConfiguration _configuration;
+        protected readonly ClientConfiguration _configuration;
 
-        private IFileSystemReadable _fileSystemReadable;
+        protected IFileSystemReadable _fileSystemReadable;
 
-        private IFileSystemWriteable _fileSystemWriteable;
+        protected IFileSystemWriteable _fileSystemWriteable;
 
-        private const int _numberOfSlots = 4096;
+        protected const int _numberOfSlots = 4096;
 
-        private readonly IShardingStrategy _shardingStrategy;
+        protected readonly IShardingStrategy _shardingStrategy;
 
         public FileSystemShardingNetClient(ClientConfiguration configuration, IFileSystemFactory fileSystemFactory = null, IShardingStrategyFactory shardingStrategyFactory = null)
         {
@@ -84,12 +84,12 @@ namespace FileSystemShardingNet
             return true;
         }
 
-        private string BuildPath(NodeConfiguration nodeConfiguration, string path)
+        protected string BuildPath(NodeConfiguration nodeConfiguration, string path)
         {
             return Path.Combine(nodeConfiguration.Path, path);
         }
 
-        private ShardConfiguration GetShardConfiguration(string path)
+        protected ShardConfiguration GetShardConfiguration(string path)
         {
             var slot = _shardingStrategy.GetSlot(_numberOfSlots, path);
 
@@ -104,19 +104,19 @@ namespace FileSystemShardingNet
             return null;
         }
 
-        private Stream GetStreamFromNodeConfiguration(NodeConfiguration nodeConfiguration, string path)
+        protected Stream GetStreamFromNodeConfiguration(NodeConfiguration nodeConfiguration, string path)
         {
             return _fileSystemReadable.GetReadStream(BuildPath(nodeConfiguration, path));
         }
 
-        private void SetFileSystems(IFileSystemFactory fileSystemFactory)
+        protected void SetFileSystems(IFileSystemFactory fileSystemFactory)
         {
             _fileSystemReadable = fileSystemFactory.CreateReadable(_configuration);
 
             _fileSystemWriteable = fileSystemFactory.CreateWriteable(_configuration);
         }
 
-        private void WriteStreamToNodeConfiguration(NodeConfiguration nodeConfiguration, string path, Stream stream)
+        protected void WriteStreamToNodeConfiguration(NodeConfiguration nodeConfiguration, string path, Stream stream)
         {
             Stream writeableStream = _fileSystemWriteable.GetWriteStream(BuildPath(nodeConfiguration, path));
 

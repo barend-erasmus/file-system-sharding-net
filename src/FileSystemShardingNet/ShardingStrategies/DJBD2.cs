@@ -11,7 +11,7 @@ namespace FileSystemShardingNet.ShardingStrategies
             return (int)(hash % numberOfSlots);
         }
 
-        private uint ComputeHash(string str)
+        protected uint ComputeHash(string str)
         {
             uint hash = 0x1505;
 
